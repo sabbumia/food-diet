@@ -1,14 +1,8 @@
-<<<<<<< HEAD
 //src/app/(routes)/classifier/page.tsx
 
 'use client';
 import React, { useState, useRef, ChangeEvent, useEffect } from 'react';
 import { Upload, Image, Loader2, CheckCircle, XCircle, User, History, Sparkles } from 'lucide-react';
-=======
-'use client';
-import React, { useState, useRef, ChangeEvent, useEffect } from 'react';
-import { Upload, Image, Loader2, CheckCircle, XCircle, User } from 'lucide-react';
->>>>>>> 190b945223af3fff05ac5705b198bb9aa1fab3c3
 import Link from 'next/link';
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -151,10 +145,6 @@ export default function FoodClassifier() {
       
       console.log('HF Response:', result.data);
       
-<<<<<<< HEAD
-=======
-      // Parse the response structure: result.data[0].confidences
->>>>>>> 190b945223af3fff05ac5705b198bb9aa1fab3c3
       // @ts-ignore
       if (result.data && result.data.length > 0) {
         // @ts-ignore
@@ -169,15 +159,9 @@ export default function FoodClassifier() {
           
           setPredictions(formattedPredictions);
           
-<<<<<<< HEAD
           // Automatically save the highest prediction with LLM recommendation
           if (formattedPredictions.length > 0) {
             await savePredictionWithRecommendation(formattedPredictions[0]);
-=======
-          // Automatically save the highest prediction
-          if (formattedPredictions.length > 0) {
-            await savePrediction(formattedPredictions[0]);
->>>>>>> 190b945223af3fff05ac5705b198bb9aa1fab3c3
           }
         } else {
           throw new Error('No confidences array found in response');
@@ -252,11 +236,7 @@ export default function FoodClassifier() {
             🍽️ Bangladeshi Food Classification AI
           </h1>
           <p className="text-gray-600">
-<<<<<<< HEAD
             Upload an image of Bangladeshi food and get AI-powered nutritional insights
-=======
-            Upload an image of Bangladeshi food and let AI identify it for you
->>>>>>> 190b945223af3fff05ac5705b198bb9aa1fab3c3
           </p>
           {userEmail && (
             <div className="flex items-center justify-center gap-4 mt-4">
@@ -414,7 +394,6 @@ export default function FoodClassifier() {
           </div>
         </div>
 
-<<<<<<< HEAD
         {/* AI Recommendation Section */}
         {llmRecommendation && (
           <div className="mt-6 bg-white rounded-xl shadow-lg p-6 animate-fadeIn">
@@ -466,22 +445,6 @@ export default function FoodClassifier() {
             This AI model uses computer vision to identify Bangladeshi food items and provides 
             personalized nutritional recommendations based on your health profile, goals, and dietary preferences.
           </p>
-=======
-        {/* Info Section */}
-        <div className="mt-6 bg-white rounded-xl shadow-lg p-6">
-          <h3 className="text-lg font-semibold text-gray-800 mb-3">
-            ℹ️ About This Classifier
-          </h3>
-          <p className="text-gray-600">
-            This AI model is hosted on Hugging Face Spaces and can identify various Bangladeshi food items. 
-            Simply upload an image and get instant predictions with confidence scores.
-          </p>
-        </div>
-
-        {/* Footer */}
-        <div className="mt-8 text-center text-gray-600 text-sm">
-          <p>Powered by NextViT Model • Hosted on Hugging Face Spaces</p>
->>>>>>> 190b945223af3fff05ac5705b198bb9aa1fab3c3
         </div>
       </div>
 
