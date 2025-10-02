@@ -47,13 +47,6 @@ interface Stats {
   averageConfidence: number;
 }
 
-interface TodayStats {
-  todayScans: number;
-  todayCalories: number;
-  todayAvgConfidence: number;
-  todayAvgCaloriesPerFood: number;
-}
-
 interface ProfileData {
   user: UserData;
   predictions: Prediction[];
@@ -62,7 +55,6 @@ interface ProfileData {
 
 export default function NutritionInsightsPage() {
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
-  const [todayStats, setTodayStats] = useState<TodayStats | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const { data: session, status } = useSession();
@@ -84,7 +76,6 @@ export default function NutritionInsightsPage() {
           throw new Error('Failed to fetch profile data');
         }
 
-<<<<<<< HEAD
         const data = await response.json();
         
         // Fetch user data
@@ -110,35 +101,6 @@ export default function NutritionInsightsPage() {
           },
           predictions: data.predictions,
           summary: data.summary
-=======
-        const data: ProfileData = await response.json();
-        setProfileData(data);
-        
-        // Calculate today's stats
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        
-        const todayPredictions = data.predictions.filter(pred => {
-          const predDate = new Date(pred.createdAt);
-          predDate.setHours(0, 0, 0, 0);
-          return predDate.getTime() === today.getTime();
-        });
-
-        const todayScans = todayPredictions.length;
-        const todayCalories = todayPredictions.reduce((sum, pred) => sum + pred.calories, 0);
-        const todayAvgConfidence = todayScans > 0 
-          ? Math.round(todayPredictions.reduce((sum, pred) => sum + pred.confidence, 0) / todayScans)
-          : 0;
-        const todayAvgCaloriesPerFood = todayScans > 0 
-          ? Math.round(todayCalories / todayScans)
-          : 0;
-
-        setTodayStats({
-          todayScans,
-          todayCalories,
-          todayAvgConfidence,
-          todayAvgCaloriesPerFood
->>>>>>> 190b945223af3fff05ac5705b198bb9aa1fab3c3
         });
       } catch (err) {
         console.error('Profile fetch error:', err);
@@ -270,7 +232,6 @@ export default function NutritionInsightsPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 py-8 px-4">
-<<<<<<< HEAD
       <div className="max-w-7xl mx-auto">
         {/* Header with Back Button */}
         <div className="mb-6 flex items-center justify-between">
@@ -278,12 +239,6 @@ export default function NutritionInsightsPage() {
             <h1 className="text-4xl font-bold text-gray-800 mb-2">Nutrition Insights</h1>
             <p className="text-gray-600">Track your food intake and get personalized recommendations</p>
           </div>
-=======
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="mb-6">
-          <h1 className="text-4xl font-bold text-gray-800">My Profile</h1>
->>>>>>> 190b945223af3fff05ac5705b198bb9aa1fab3c3
         </div>
 
         {/* User Profile Card */}
@@ -382,7 +337,6 @@ export default function NutritionInsightsPage() {
           </div>
         </div>
 
-<<<<<<< HEAD
         {/* Today's Summary */}
         {todayStats && todayStats.count > 0 && (
           <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl shadow-lg p-6 mb-6 text-white">
@@ -430,68 +384,10 @@ export default function NutritionInsightsPage() {
               <div>
                 <p className="text-sm text-gray-600">Total Food Scans</p>
                 <p className="text-3xl font-bold text-gray-800">{summary.totalPredictions}</p>
-=======
-        {/* Today's Statistics */}
-        {todayStats && (
-          <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-700 mb-3 flex items-center gap-2">
-              <Calendar className="w-5 h-5" />
-              Today's Activity
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div className="bg-gradient-to-br from-blue-500 to-blue-200 rounded-xl shadow-lg p-6 text-white">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                    <Utensils className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-blue-100">Today's Scans</p>
-                    <p className="text-2xl font-bold">{todayStats.todayScans}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-gradient-to-br from-green-500 to-green-200 rounded-xl shadow-lg p-6 text-white">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                    <TrendingUp className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-green-100">Today's Calories</p>
-                    <p className="text-2xl font-bold">{todayStats.todayCalories}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-gradient-to-br from-purple-500 to-purple-200 rounded-xl shadow-lg p-6 text-white">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                    <Activity className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-purple-100">Today's Avg Conf</p>
-                    <p className="text-2xl font-bold">{todayStats.todayAvgConfidence}%</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-gradient-to-br from-orange-500 to-orange-200 rounded-xl shadow-lg p-6 text-white">
-                <div className="flex items-center gap-3 mb-2">
-                  <div className="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
-                    <Utensils className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-orange-100">Today's Cal/Food</p>
-                    <p className="text-2xl font-bold">{todayStats.todayAvgCaloriesPerFood}</p>
-                  </div>
-                </div>
->>>>>>> 190b945223af3fff05ac5705b198bb9aa1fab3c3
               </div>
             </div>
           </div>
-        )}
 
-<<<<<<< HEAD
           <div className="bg-white rounded-xl shadow-lg p-6">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
@@ -500,28 +396,10 @@ export default function NutritionInsightsPage() {
               <div>
                 <p className="text-sm text-gray-600">Total Calories Logged</p>
                 <p className="text-3xl font-bold text-gray-800">{summary.totalCalories}</p>
-=======
-        {/* Overall Statistics */}
-        <div className="mb-6">
-          <h3 className="text-lg font-semibold text-gray-700 mb-3 flex items-center gap-2">
-            <TrendingUp className="w-5 h-5" />
-            Overall Statistics
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <Utensils className="w-5 h-5 text-blue-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Total Scans</p>
-                  <p className="text-2xl font-bold text-gray-800">{stats.totalPredictions}</p>
-                </div>
->>>>>>> 190b945223af3fff05ac5705b198bb9aa1fab3c3
               </div>
             </div>
+          </div>
 
-<<<<<<< HEAD
           <div className="bg-white rounded-xl shadow-lg p-6">
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
@@ -530,41 +408,6 @@ export default function NutritionInsightsPage() {
               <div>
                 <p className="text-sm text-gray-600">Avg Confidence</p>
                 <p className="text-3xl font-bold text-gray-800">{summary.averageConfidence}%</p>
-=======
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                  <TrendingUp className="w-5 h-5 text-green-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Total Calories</p>
-                  <p className="text-2xl font-bold text-gray-800">{stats.totalCalories}</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <Activity className="w-5 h-5 text-purple-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Avg Confidence</p>
-                  <p className="text-2xl font-bold text-gray-800">{stats.averageConfidence}%</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
-                  <Utensils className="w-5 h-5 text-orange-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Avg Cal/Food</p>
-                  <p className="text-2xl font-bold text-gray-800">{stats.averageCaloriesPerFood}</p>
-                </div>
->>>>>>> 190b945223af3fff05ac5705b198bb9aa1fab3c3
               </div>
             </div>
           </div>
